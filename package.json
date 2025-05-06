@@ -1,8 +1,8 @@
 {
-  "name": "AI-Translator",
+  "name": "ai-translator",
   "displayName": "AI-Translator",
   "description": "AI translate source for comment-translate",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "publisher": "ivnjey",
   "engines": {
     "vscode": "^1.99.1"
@@ -39,7 +39,7 @@
         "properties": {
           "aiTranslator.authKey": {
             "type": "string",
-            "markdownDescription": "You need an authentication key to access to the API.[Accessing the API](https://openai.com)"
+            "markdownDescription": "You need an authentication key to access to the API.[Accessing the API](https://openai.com) or OpenAI-like"
           },
           "aiTranslator.apiAddress": {
             "type": "string",
@@ -51,6 +51,11 @@
             "default": "o3-mini",
             "markdownDescription": "Custom model"
           },
+          "aiTranslator.hideThinking": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Hide thinking"
+          },
           "aiTranslator.systemPrompt": {
             "type": "string",
             "default": "You are a professional translation engine in the IT field, do not translate noun phrases and programming domain terms, only return the translation result.",
@@ -58,8 +63,8 @@
           },
           "aiTranslator.userPrompt": {
             "type": "string",
-            "default": "en => ru: ",
-            "markdownDescription": "Custom user prompt"
+            "default": "",
+            "markdownDescription": "Custom user prompt (Not recommended to change)"
           },
           "aiTranslator.temperature": {
             "type": "number",

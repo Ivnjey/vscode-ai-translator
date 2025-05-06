@@ -25,6 +25,7 @@ interface AITranslateOption {
   authKey?: string;
   apiAddress?: string;
   model?: string;
+  is_hide_thinking: boolean;
   systemPrompt?: string;
   userPrompt?: string;
   temperature?: number;
@@ -52,6 +53,7 @@ export class AITranslator implements ITranslate {
       authKey: getConfig<string>("authKey"),
       apiAddress: getConfig<string>("apiAddress"),
       model: getConfig<string>("model"),
+      is_hide_thinking: getConfig<boolean>("hideThinking"),
       systemPrompt: getConfig<string>("systemPrompt"),
       userPrompt: getConfig<string>("userPrompt"),
       temperature: getConfig<number>("temperature"),
@@ -65,8 +67,24 @@ export class AITranslator implements ITranslate {
     if (!this._defaultOption.authKey) {
       throw new Error("Please check the configuration of authKey!");
     }
+    console.log("[DEBUG] targetlang: " + to);
     let systemPrompt = this._defaultOption.systemPrompt || `You are a professional translation engine in the IT field, do not translate noun phrases and programming domain terms, only return the translation result.`;
-    let userPrompt = this._defaultOption.userPrompt ? `${this._defaultOption.userPrompt}${content}` : `${content}`;
+
+    const targetDisplayLang = convertLang(to);
+    let languageInstruction: string;
+    if (to && to.toLowerCase() !== 'auto' && to !== '') {
+      languageInstruction = `Translate the following text to ${targetDisplayLang}: `;
+    }
+
+    let userPrompt: string;
+    const configuredUserPrompt = this._defaultOption.userPrompt;
+
+    if (configuredUserPrompt) {
+      userPrompt = `${configuredUserPrompt}${content}`;
+    } else {
+      userPrompt = `${languageInstruction}${content}`;
+    }
+
     const body = {
       model: this._defaultOption.model,
       temperature: this._defaultOption.temperature ? this._defaultOption.temperature : 0.3,
@@ -93,7 +111,13 @@ export class AITranslator implements ITranslate {
     let res = await axios.post(url, body, { headers });
     const { choices } = res.data;
     let targetTxt = choices[0].message.content;
-    return targetTxt.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
+    if (this._defaultOption.is_hide_thinking) return this.hideThink(targetTxt);
+
+    return (targetTxt);
+  }
+
+  hideThink(text: string) {
+    return text.replace(/<think>[\s\S]*?<\/think>/g, "").trim();
   }
 
   link(content: string, { to = "auto" }: ITranslateOptions) {

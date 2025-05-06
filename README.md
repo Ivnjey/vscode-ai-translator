@@ -1,4 +1,4 @@
-# chatgpt-comment-translateX
+# AI-Translator
 
 This plugin provides a translation source for the "comment-translate" plugin. It does not activate itself and will only start working when enabled.
 
@@ -32,6 +32,10 @@ Please install '[comment-translate](https://github.com/intellism/vscode-comment-
    "commentTranslate.source": "ivnjey.AI-Translator-aitranslator",
    "commentTranslate.targetLanguage": "ru-RU"
    ```
+
+   or change this item:
+
+   ![alt text](./image/target.png)
 
 ## Extension Settings
 
