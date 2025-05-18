@@ -2,7 +2,7 @@
   "name": "ai-translator",
   "displayName": "AI-Translator",
   "description": "AI translate source for comment-translate",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "publisher": "ivnjey",
   "engines": {
     "vscode": "^1.99.1"
