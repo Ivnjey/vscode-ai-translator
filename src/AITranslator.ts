@@ -26,6 +26,7 @@ interface AITranslateOption {
   apiAddress?: string;
   model?: string;
   is_hide_thinking: boolean;
+  displayName: string;
   systemPrompt?: string;
   userPrompt?: string;
   temperature?: number;
@@ -54,6 +55,7 @@ export class AITranslator implements ITranslate {
       apiAddress: getConfig<string>("apiAddress"),
       model: getConfig<string>("model"),
       is_hide_thinking: getConfig<boolean>("hideThinking"),
+      displayName: getConfig<string>("displayName"),
       systemPrompt: getConfig<string>("systemPrompt"),
       userPrompt: getConfig<string>("userPrompt"),
       temperature: getConfig<number>("temperature"),
@@ -122,11 +124,12 @@ export class AITranslator implements ITranslate {
 
   link(content: string, { to = "auto" }: ITranslateOptions) {
     let str = `${this._defaultOption.apiAddress}/${convertLang(to)}/${encodeURIComponent(content)}`;
-
-    return `[AI](${str})`;
+    let displayName = this._defaultOption.displayName;
+    return `[${displayName}](${str})`;
   }
 
   isSupported(src: string) {
     return true;
   }
 }
+///test
